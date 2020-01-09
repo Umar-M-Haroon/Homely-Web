@@ -28,9 +28,6 @@ class Firebase {
     userID = () => this.auth.currentUser.uid;
 
     homes = () => {
-        var getOptions = {
-            source: 'cache'
-        }
         return this.db.collection('Homes').where("userIDs", "array-contains", this.auth.currentUser.uid).get();
     }
 }
