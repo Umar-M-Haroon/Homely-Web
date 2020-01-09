@@ -11,8 +11,6 @@ const config = {
 }
 class Firebase {
     constructor() {
-        console.log(process.env.REACT_APP_API_KEY);
-        console.log(process.env);
         app.initializeApp(config);
         this.auth = app.auth();
         this.db = app.firestore();
