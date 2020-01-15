@@ -9,7 +9,7 @@ import * as ROUTES from '../../constants/routes';
 
 const SignUpPage = () => (
     <div>
-        <h1>SignUp</h1>
+        <h4>Sign Up</h4>
         <SignUpForm />
     </div>
 );
@@ -26,7 +26,7 @@ class SignUpFormBase extends Component {
         this.state = { ...INITIAL_STATE };
     }
     onSubmit = event => {
-        const { username, email, passwordOne } = this.state;
+        const { email, passwordOne } = this.state;
         this.props.firebase
             .doCreateUserWithEmailAndPassword(email, passwordOne)
             .then(authUser => {

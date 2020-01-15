@@ -14,6 +14,11 @@ class Firebase {
         app.initializeApp(config);
         this.auth = app.auth();
         this.db = app.firestore();
+        this.db.enablePersistence()
+        .catch(err =>{
+            console.log("Error setting persistence");
+            console.log(err);
+        });
     }
 
     doCreateUserWithEmailAndPassword = (email, password) => this.auth.createUserWithEmailAndPassword(email, password);
