@@ -5,7 +5,7 @@ import { compose } from 'recompose';
 import { withFirebase } from '../Firebase';
 import * as ROUTES from '../../constants/routes';
 
-
+import './SignUp.css';
 
 const SignUpPage = () => (
     <div>
@@ -25,6 +25,14 @@ class SignUpFormBase extends Component {
         super(props);
         this.state = { ...INITIAL_STATE };
     }
+    componentDidMount(){
+        const script = document.createElement("script");
+
+    script.src = "https://appleid.cdn-apple.com/appleauth/static/jsapi/appleid/1/en_US/appleid.auth.js";
+    script.async = true;
+
+    document.body.appendChild(script);
+    }
     onSubmit = event => {
         const { email, passwordOne } = this.state;
         this.props.firebase
@@ -41,53 +49,58 @@ class SignUpFormBase extends Component {
     onChange = event => {
         this.setState({ [event.target.name]: event.target.value });
     }
+    validateEmail = (email) => {
+        const expression = /^(([^<>()[]\\.,;:\s@"]+(\.[^<>()[]\\.,;:\s@"]+)*)|(".+"))@(([[0-9]{1,3}​.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return expression.test(String(email).toLowerCase())
+    }
 
     render() {
         const {
             username,
             email,
             passwordOne,
-            passwordTwo,
             error,
         } = this.state;
         const isInvalid =
-            passwordOne !== passwordTwo ||
-            passwordOne === '' ||
-            email === '' ||
+            passwordOne.length <= 7 ||
+            this.validateEmail(email) ||
             username === '';
         return (
-            <form onSubmit={this.onSubmit}>
-                <input
-                    name="username"
-                    value={username}
-                    onChange={this.onChange}
-                    type="text"
-                    placeholder="Full Name"
-                />
-                <input
-                    name="email"
-                    value={email}
-                    onChange={this.onChange}
-                    type="text"
-                    placeholder="Email Address"
-                />
-                <input
-                    name="passwordOne"
-                    value={passwordOne}
-                    onChange={this.onChange}
-                    type="password"
-                    placeholder="Password"
-                />
-                <input
-                    name="passwordTwo"
-                    value={passwordTwo}
-                    onChange={this.onChange}
-                    type="password"
-                    placeholder="Confirm Password"
-                />
-                <button disabled={isInvalid} type="submit">Sign Up</button>
-                {error && <p>{error.message}</p>}
-            </form>
+            <div>
+                <form onSubmit={this.onSubmit}>
+                    <div className="form-group">
+                        <input className="form-control"
+                            name="username"
+                            value={username}
+                            onChange={this.onChange}
+                            type="text"
+                            placeholder="Display Name"
+                        />
+                    </div>
+                    <div className="form-group">
+                        <input className="form-control"
+                            name="email"
+                            value={email}
+                            onChange={this.onChange}
+                            type="text"
+                            placeholder="Email Address"
+                        />
+                    </div>
+                    <div className="form-group">
+                        <input className="form-control"
+                            name="passwordOne"
+                            value={passwordOne}
+                            onChange={this.onChange}
+                            type="password"
+                            placeholder="Password"
+                        />
+                        <small className="form-text text-muted">Passwords must be at least 8 characters long</small>
+                    </div>
+                    <button disabled={isInvalid} type="submit" className="btn btn-primary">Sign Up</button>
+                    {error && <p>{error.message}</p>}
+                </form>
+                <div id="appleid-signin" data-type="continue"></div>
+            </div>
         );
     }
 }
@@ -96,6 +109,6 @@ const SignUpLink = () => (
         Don't have an account? <Link to={ROUTES.SIGN_UP}>Sign Up</Link>
     </p>
 )
-const SignUpForm = compose(withRouter,withFirebase,)(SignUpFormBase);
+const SignUpForm = compose(withRouter, withFirebase)(SignUpFormBase);
 export default SignUpPage;
 export { SignUpForm, SignUpLink };
