@@ -1,5 +1,4 @@
-#appleid-signin{
-    /* width: 130px; */
-    height: 40px;
-    /* background-color: red; */
+.signin-button{
+    text-align: center;
+    margin: auto;
 }

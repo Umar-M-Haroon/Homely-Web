@@ -25,13 +25,13 @@ class SignUpFormBase extends Component {
         super(props);
         this.state = { ...INITIAL_STATE };
     }
-    componentDidMount(){
+    componentDidMount() {
         const script = document.createElement("script");
 
-    script.src = "https://appleid.cdn-apple.com/appleauth/static/jsapi/appleid/1/en_US/appleid.auth.js";
-    script.async = true;
-
-    document.body.appendChild(script);
+        script.src = "https://appleid.cdn-apple.com/appleauth/static/jsapi/appleid/1/en_US/appleid.auth.js";
+        script.async = true;
+        script.id = "appleid-signin"
+        document.body.appendChild(script);
     }
     onSubmit = event => {
         const { email, passwordOne } = this.state;
@@ -99,7 +99,15 @@ class SignUpFormBase extends Component {
                     <button disabled={isInvalid} type="submit" className="btn btn-primary">Sign Up</button>
                     {error && <p>{error.message}</p>}
                 </form>
-                <div id="appleid-signin" data-type="continue"></div>
+                {/* <div id="appleid-signin" className="signin-button" data-type="continue"></div> */}
+                <h6 className="signin-button">or </h6>
+                <div className="signin-button">
+                {/* "https://appleid.apple.com/auth/authorize?client_id=com.zillow.zillowweb&redirect_uri=https%3A%2F%2Fwww.zillow.com%2Fuser%2Faccount%2Fservices%2FAppleRedirectHandler.htm&state=hc3gizsjbk4e7we3ebbkgj&scope=name%20email&response_mode=form_post&response_type=code%20id_token */}
+
+                    <a href="https://appleid.apple.com/auth/authorize?client_id=com.Komodo.Homely&redirect_uri=homelyweb.com&response_type=code%20id_token&scope=name&response_mode=form_post&state=HI">
+                        <img className="signin-button" src="https://appleid.cdn-apple.com/appleid/button?height=64&width=300&type=continue" alt="Sign In With Apple" />
+                    </a>
+                </div>
             </div>
         );
     }
