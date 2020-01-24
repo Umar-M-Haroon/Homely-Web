@@ -31,7 +31,7 @@ class SignUpFormBase extends Component {
         script.src = "https://appleid.cdn-apple.com/appleauth/static/jsapi/appleid/1/en_US/appleid.auth.js";
         script.async = true;
         script.id = "appleid-signin"
-        document.body.appendChild(script);
+        // document.body.appendChild(script);
     }
     onSubmit = event => {
         const { email, passwordOne } = this.state;
@@ -52,6 +52,20 @@ class SignUpFormBase extends Component {
     validateEmail = (email) => {
         const expression = /^(([^<>()[]\\.,;:\s@"]+(\.[^<>()[]\\.,;:\s@"]+)*)|(".+"))@(([[0-9]{1,3}​.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         return expression.test(String(email).toLowerCase())
+    }
+
+    createAndOpenAppleURL = () => {
+        const parameters = new URLSearchParams({
+            "client_id": process.env.REACT_APP_APPLE_CLIENT_ID,
+            "redirect_uri": process.env.REACT_APP_APPLE_REDIRECT_URI,
+            "state": "HI",
+            "scope": process.env.REACT_APP_APPLE_SCOPE,
+            "response_mode": process.env.REACT_APP_APPLE_RESPONSE_MODE,
+            "response_type": process.env.REACT_APP_APPLE_RESPONSE_TYPE
+        });
+        const url = new URL(`https://appleid.apple.com/auth/authorize?${parameters.toString()}`);
+        console.log(url);
+        window.open(url);
     }
 
     render() {
@@ -99,11 +113,11 @@ class SignUpFormBase extends Component {
                     <button disabled={isInvalid} type="submit" className="btn btn-primary">Sign Up</button>
                     {error && <p>{error.message}</p>}
                 </form>
-                {/* <div id="appleid-signin" className="signin-button" data-type="continue"></div> */}
                 <h6 className="signin-button">or </h6>
                 <div className="signin-button">
-                {/* "https://appleid.apple.com/auth/authorize?client_id=com.zillow.zillowweb&redirect_uri=https%3A%2F%2Fwww.zillow.com%2Fuser%2Faccount%2Fservices%2FAppleRedirectHandler.htm&state=hc3gizsjbk4e7we3ebbkgj&scope=name%20email&response_mode=form_post&response_type=code%20id_token */}
-
+                    <a href="https://appleid.apple.com/auth/authorize?client_id=com.zillow.zillowweb&redirect_uri=https%3A%2F%2Fwww.zillow.com%2Fuser%2Faccount%2Fservices%2FAppleRedirectHandler.htm&state=hc3gizsjbk4e7we3ebbkgj&scope=name%20email&response_mode=form_post&response_type=code%20id_token">
+                        <img className="signin-button" src="https://appleid.cdn-apple.com/appleid/button?height=64&width=300&type=continue" alt="Sign In With Apple" />
+                    </a>
                     <a href="https://appleid.apple.com/auth/authorize?client_id=com.Komodo.Homely&redirect_uri=homelyweb.com&response_type=code%20id_token&scope=name&response_mode=form_post&state=HI">
                         <img className="signin-button" src="https://appleid.cdn-apple.com/appleid/button?height=64&width=300&type=continue" alt="Sign In With Apple" />
                     </a>
