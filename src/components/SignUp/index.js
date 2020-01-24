@@ -26,12 +26,9 @@ class SignUpFormBase extends Component {
         this.state = { ...INITIAL_STATE };
     }
     componentDidMount() {
-        const script = document.createElement("script");
-
-        script.src = "https://appleid.cdn-apple.com/appleauth/static/jsapi/appleid/1/en_US/appleid.auth.js";
-        script.async = true;
-        script.id = "appleid-signin"
-        // document.body.appendChild(script);
+        document.getElementById("Apple-Sign-In").onclick = (()=>{
+            this.createAndOpenAppleURL();
+        });
     }
     onSubmit = event => {
         const { email, passwordOne } = this.state;
@@ -64,7 +61,6 @@ class SignUpFormBase extends Component {
             "response_type": process.env.REACT_APP_APPLE_RESPONSE_TYPE
         });
         const url = new URL(`https://appleid.apple.com/auth/authorize?${parameters.toString()}`);
-        console.log(url);
         window.open(url);
     }
 
@@ -115,12 +111,9 @@ class SignUpFormBase extends Component {
                 </form>
                 <h6 className="signin-button">or </h6>
                 <div className="signin-button">
-                    <a href="https://appleid.apple.com/auth/authorize?client_id=com.zillow.zillowweb&redirect_uri=https%3A%2F%2Fwww.zillow.com%2Fuser%2Faccount%2Fservices%2FAppleRedirectHandler.htm&state=hc3gizsjbk4e7we3ebbkgj&scope=name%20email&response_mode=form_post&response_type=code%20id_token">
+                    <button id="Apple-Sign-In" className="btn btn-link">
                         <img className="signin-button" src="https://appleid.cdn-apple.com/appleid/button?height=64&width=300&type=continue" alt="Sign In With Apple" />
-                    </a>
-                    <a href="https://appleid.apple.com/auth/authorize?client_id=com.Komodo.Homely&redirect_uri=homelyweb.com&response_type=code%20id_token&scope=name&response_mode=form_post&state=HI">
-                        <img className="signin-button" src="https://appleid.cdn-apple.com/appleid/button?height=64&width=300&type=continue" alt="Sign In With Apple" />
-                    </a>
+                    </button>
                 </div>
             </div>
         );
