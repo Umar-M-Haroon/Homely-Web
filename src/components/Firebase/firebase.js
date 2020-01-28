@@ -3,7 +3,7 @@ import 'firebase/auth';
 import 'firebase/firestore';
 const config = {
     apiKey: process.env.REACT_APP_API_KEY,
-    authDomain: 'homelyweb.com',
+    authDomain: process.env.REACT_APP_AUTH_DOMAIN,
     databaseURL: process.env.REACT_APP_DATABASE_URL,
     projectId: process.env.REACT_APP_PROJECT_ID,
     storageBucket: process.env.REACT_APP_STORAGE_BUCKET,
@@ -41,7 +41,13 @@ class Firebase {
         provider.addScope('name');
         this.auth.signInWithPopup(provider)
         .then( (result) =>{
-            console.log(result.user);
+            let token = ""
+            if (result.additionalUserInfo.isNewUser === false){
+                token = result.additionalUserInfo.profile.sub;
+            }else{
+                token = result.credential.idToken;
+            }
+            
         })
         .catch( (error) =>{
             console.log(error)
