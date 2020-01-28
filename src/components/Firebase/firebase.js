@@ -35,5 +35,17 @@ class Firebase {
     homes = () => {
         return this.db.collection('Homes').where("userIDs", "array-contains", this.auth.currentUser.uid).get();
     }
+
+    handleSignInWithApple = () => {
+        var provider = new app.auth.OAuthProvider('apple.com');
+        provider.addScope('name');
+        this.auth.signInWithRedirect(provider)
+        .then( (result) =>{
+            console.log(result.user);
+        })
+        .catch( (error) =>{
+
+        });
+    }
 }
 export default Firebase

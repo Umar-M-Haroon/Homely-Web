@@ -27,7 +27,7 @@ class SignUpFormBase extends Component {
     }
     componentDidMount() {
         document.getElementById("Apple-Sign-In").onclick = (()=>{
-            this.createAndOpenAppleURL();
+            this.props.firebase.handleSignInWithApple();
         });
     }
     onSubmit = event => {
