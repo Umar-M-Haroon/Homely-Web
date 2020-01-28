@@ -37,6 +37,7 @@ class Firebase {
     }
 
     handleSignInWithApple = () => {
+        console.log("Button Pressed");
         var provider = new app.auth.OAuthProvider('apple.com');
         provider.addScope('name');
         this.auth.signInWithRedirect(provider)
@@ -44,7 +45,7 @@ class Firebase {
             console.log(result.user);
         })
         .catch( (error) =>{
-
+            console.log(error);
         });
     }
 }
