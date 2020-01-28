@@ -3,7 +3,7 @@ import 'firebase/auth';
 import 'firebase/firestore';
 const config = {
     apiKey: process.env.REACT_APP_API_KEY,
-    authDomain: process.env.REACT_APP_AUTH_DOMAIN,
+    authDomain: 'homelyweb.com',
     databaseURL: process.env.REACT_APP_DATABASE_URL,
     projectId: process.env.REACT_APP_PROJECT_ID,
     storageBucket: process.env.REACT_APP_STORAGE_BUCKET,
@@ -37,7 +37,6 @@ class Firebase {
     }
 
     handleSignInWithApple = () => {
-        console.log("Button Pressed");
         var provider = new app.auth.OAuthProvider('apple.com');
         provider.addScope('name');
         this.auth.signInWithPopup(provider)
@@ -45,7 +44,7 @@ class Firebase {
             console.log(result.user);
         })
         .catch( (error) =>{
-            console.log(error);
+            console.log(error)
         });
     }
 }
