@@ -40,7 +40,7 @@ class Firebase {
         console.log("Button Pressed");
         var provider = new app.auth.OAuthProvider('apple.com');
         provider.addScope('name');
-        this.auth.signInWithRedirect(provider)
+        this.auth.signInWithPopup(provider)
         .then( (result) =>{
             console.log(result.user);
         })
