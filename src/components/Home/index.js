@@ -13,14 +13,19 @@ class Home extends Component {
     componentDidMount() {
         var allChores = []
         this.setState({ loading: false });
+        
         this.props.firebase.homes()
             .then(querySnapshot => {
+                console.log("TEST");
+                console.log(this.props.firebase.auth.currentUser.uid);
+                console.log(querySnapshot.docs);
                 querySnapshot.forEach(doc => {
+                    console.log(querySnapshot);
                     doc.data().Chores.forEach(chore => {
                         allChores.push(chore.Title);
                         return chore.Title;
                     });
-                    doc.data()
+                    console.log(doc.data);
                     this.setState({
                         chores: allChores,
                         loading: false,
@@ -28,6 +33,7 @@ class Home extends Component {
                     console.log(allChores);
                 })
             }).catch(error => {
+                console.log("error fetching Homes");
                 console.log(error);
             });
     }

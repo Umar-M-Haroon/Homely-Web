@@ -44,13 +44,23 @@ class Firebase {
         this.auth.signInWithPopup(provider)
             .then((result) => {
                 let token = result.additionalUserInfo.profile.sub;
+                
+                var user = this.auth.currentUser;
+                user.updateProfile({
+                    uid: token,
+                }).then(() =>{
+                    console.log("Successfully updated prof");
+                    console.log(this.auth.currentUser.uid);
+                }).catch((err) =>{
+                    console.log("Failed");
+                })
                 var createCustomToken = this.functions.httpsCallable('createCustomToken');
-                createCustomToken({text: token}).then(result => {
-                    var createdToken = result.data.text;
-                    this.auth.signInWithCustomToken(createdToken);
-                }).catch(error =>{
+                // createCustomToken({text: token}).then(result => {
+                //     var createdToken = result.data.text;
+                //     this.auth.signInWithCustomToken(createdToken);
+                // }).catch(error =>{
 
-                });
+                // });
             })
             .catch((error) => {
                 console.log(error)
