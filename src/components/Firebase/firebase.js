@@ -1,6 +1,7 @@
 import app from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/firestore';
+import 'firebase/functions';
 const config = {
     apiKey: process.env.REACT_APP_API_KEY,
     authDomain: process.env.REACT_APP_AUTH_DOMAIN,
@@ -15,10 +16,10 @@ class Firebase {
         this.auth = app.auth();
         this.db = app.firestore();
         this.db.enablePersistence()
-        .catch(err =>{
-            console.log("Error setting persistence");
-            console.log(err);
-        });
+            .catch(err => {
+                console.log("Error setting persistence");
+                console.log(err);
+            });
     }
 
     doCreateUserWithEmailAndPassword = (email, password) => this.auth.createUserWithEmailAndPassword(email, password);
@@ -40,18 +41,12 @@ class Firebase {
         var provider = new app.auth.OAuthProvider('apple.com');
         provider.addScope('name');
         this.auth.signInWithPopup(provider)
-        .then( (result) =>{
-            let token = ""
-            if (result.additionalUserInfo.isNewUser === false){
-                token = result.additionalUserInfo.profile.sub;
-            }else{
-                token = result.credential.idToken;
-            }
-            
-        })
-        .catch( (error) =>{
-            console.log(error)
-        });
+            .then((result) => {
+                let token = result.additionalUserInfo.profile.sub;
+            })
+            .catch((error) => {
+                console.log(error)
+            });
     }
 }
 export default Firebase
