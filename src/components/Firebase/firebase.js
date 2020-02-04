@@ -15,6 +15,7 @@ class Firebase {
         app.initializeApp(config);
         this.auth = app.auth();
         this.db = app.firestore();
+        this.functions = app.functions();
         this.db.enablePersistence()
             .catch(err => {
                 console.log("Error setting persistence");
@@ -43,6 +44,13 @@ class Firebase {
         this.auth.signInWithPopup(provider)
             .then((result) => {
                 let token = result.additionalUserInfo.profile.sub;
+                var createCustomToken = this.functions.httpsCallable('createCustomToken');
+                createCustomToken({text: token}).then(result => {
+                    var createdToken = result.data.text;
+                    this.auth.signInWithCustomToken(createdToken);
+                }).catch(error =>{
+
+                });
             })
             .catch((error) => {
                 console.log(error)
