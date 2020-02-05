@@ -43,28 +43,33 @@ class Firebase {
         provider.addScope('name');
         this.auth.signInWithPopup(provider)
             .then((result) => {
-                let token = result.additionalUserInfo.profile.sub;
-                
-                var user = this.auth.currentUser;
-                user.updateProfile({
-                    uid: token,
-                }).then(() =>{
-                    console.log("Successfully updated prof");
-                    console.log(this.auth.currentUser.uid);
-                }).catch((err) =>{
-                    console.log("Failed");
-                })
-                var createCustomToken = this.functions.httpsCallable('createCustomToken');
-                // createCustomToken({text: token}).then(result => {
-                //     var createdToken = result.data.text;
-                //     this.auth.signInWithCustomToken(createdToken);
-                // }).catch(error =>{
-
-                // });
+                if (result.additionalUserInfo.isNewUser === false) {
+                    this.auth.signOut().then(() => {
+                        let token = result.additionalUserInfo.profile.sub;
+                        var createCustomToken = this.functions.httpsCallable('createCustomToken');
+                        createCustomToken({ identifier: token }).then(result => {
+                            var createdToken = result.data.token;
+                            this.auth.signInWithCustomToken(createdToken).then(() => {
+                                this.migrateUserToSignInWithApple();
+                            });
+                        }).catch((error) => {
+                            console.log("error creating custom token" + error);
+                        })
+                    }).catch((error) => {
+                        console.log(error);
+                    })
+                }
             })
             .catch((error) => {
                 console.log(error)
             });
+    }
+    migrateUserToSignInWithApple = () => {
+        var provider = new app.auth.OAuthProvider('apple.com');
+        provider.addScope('name');
+        this.auth.currentUser.linkWithPopup(provider).then((result) => {
+        }).catch((error) => {
+        })
     }
 }
 export default Firebase
