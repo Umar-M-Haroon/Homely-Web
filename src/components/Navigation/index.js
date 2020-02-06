@@ -18,7 +18,7 @@ const NavigationAuth = () => (
     <div>
         <nav className="navbar navbar-light">
             <Link className="navbar-brand" to={ROUTES.HOME}>Homely</Link>
-            <Link className="navbar" to={ROUTES.LANDING}>Landing</Link>
+            {/* <Link className="navbar" to={ROUTES.LANDING}>Landing</Link> */}
             <Link className="navbar" to={ROUTES.ACCOUNT}>Account</Link>
             <SignOutButton />
         </nav>
